@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monochromatic Black & White Player</title>
+    <title>Monochromatic Black & White Player - Neon Brutalism (Fluid Screen)</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <style>
@@ -13,12 +13,17 @@
         :root {
             --dark-bg: #000000; 
             --card-bg: #000000; 
-            --text-light: #ffffff; /* Pure white text */
-            --text-muted: #aaaaaa; /* Medium gray for secondary text */
-            --highlight-color: #dddddd; /* New: Light gray/white for highlights */
-            --control-color: #555555; /* Dark gray for control track */
+            --text-light: #ffffff; 
+            --text-muted: #aaaaaa; 
+            --highlight-color: #dddddd; 
+            --control-color: #555555; 
             --primary-border-color: #333333; 
             --subtle-bg-hover: #1a1a1a;
+
+            /* NEON ADDITIONS */
+            --neon-white: #ffffff; 
+            --neon-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7); 
+            --neon-shadow-hover: 0 0 15px 5px rgba(255, 255, 255, 1); 
         }
 
         body {
@@ -27,6 +32,7 @@
             overflow: hidden; 
         }
         
+        /* Wrapper takes up 100% of the viewport */
         .wrapper {
             background: var(--dark-bg);
             height: 100vh; 
@@ -36,30 +42,65 @@
             left: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Center the player vertically */
+            padding: 0; 
         }
 
+        /* Player uses viewport units to scale dynamically */
         .player {
-            width: 320px;
-            height: 568px;
+            width: 95vw; /* Takes up 95% of viewport width */
+            max-width: 450px; /* Optional: Sets a maximum size for desktop view */
+            height: 95vh; /* Takes up 95% of viewport height */
+            max-height: 860px; /* Optional: Sets a maximum size for ultra large phones/desktop */
+            
             background: var(--card-bg);
-            border-radius: 8px; 
+            border-radius: 0; 
             border: 1px solid var(--primary-border-color); 
             position: relative;
             color: var(--text-light); 
-            padding-top: 30px; 
+            overflow: hidden; 
+            display: flex; /* Enable flex for better internal control positioning */
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        /* Visible Top Search Bar Styling (Brutalist style retained) */
+        .search-container-main {
+            padding: 15px 15px 10px 15px; 
+            /* Ensure the search container maintains flex basis so other elements can flow */
+            flex-shrink: 0;
+        }
+
+        #main-search-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid var(--primary-border-color); 
+            border-radius: 0; 
+            background-color: var(--subtle-bg-hover);
+            color: var(--text-light);
+            font-size: 14px;
+            transition: border-color 0.2s;
+            box-sizing: border-box; 
+        }
+        
+        #main-search-input:focus {
+            outline: none;
+            border-color: var(--highlight-color);
         }
 
         .image {
             display: block;
-            border-radius: 8px;
+            border-radius: 0;
+            /* Increased height for taller screens */
             height: 60%; 
+            /* Use auto margins to center and fill remaining width */
+            flex-grow: 1;
+            margin: 0 15px; /* Added slight side margin */
             position: relative;
             background-color: #333; 
             background-size: cover;
             background-position: center center;
             transition: background-image 0.3s ease-in-out;
-            margin: 0 10px;
             border: 1px solid var(--primary-border-color); 
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
         }
@@ -69,6 +110,7 @@
             text-align: center;
             padding: 15px 0 10px 0;
             margin: 0 auto;
+            flex-shrink: 0;
         }
         
         .song-name {
@@ -93,6 +135,7 @@
             justify-content: space-between;
             color: var(--text-muted);
             font-size: 10px;
+            flex-shrink: 0;
         }
         
         .progress-container {
@@ -107,33 +150,41 @@
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: var(--highlight-color); /* Now white/light gray */
+            background: var(--highlight-color); 
             border-radius: 2px;
             transition: width 0.1s linear;
         }
 
         .controls {
             width: 100%;
-            height: 10%;
+            /* Fixed height for controls */
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-evenly; 
             padding: 10px 0;
+            margin-bottom: 0; 
+            flex-shrink: 0;
         }
 
+        /* NEON CONTROL STYLES: Round, White, Glowing */
         .player-controls_btn {
-            color: var(--text-light);
+            color: #000000; /* Icon color */
+            background-color: var(--neon-white); 
             cursor: pointer;
             text-align: center;
             padding: 10px 15px;
-            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+            transition: box-shadow 0.2s, background-color 0.2s;
             border: 1px solid var(--primary-border-color);
-            border-radius: 50%; 
+            border-radius: 50%; /* ROUND */
+            box-shadow: var(--neon-shadow); /* NEON GLOW */
         }
 
         .player-controls_btn:hover {
-            color: var(--highlight-color); /* Now white/light gray */
-            background-color: var(--subtle-bg-hover);
+            color: #000000; 
+            background-color: var(--neon-white); 
+            border-color: var(--neon-white);
+            box-shadow: var(--neon-shadow-hover); /* DYNAMIC NEON GLOW */
         }
         
         .player-controls__btn_play {
@@ -143,16 +194,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: var(--neon-white); 
+            border-radius: 50%; /* ROUND */
+            box-shadow: var(--neon-shadow); /* NEON GLOW */
+            border: 1px solid var(--neon-white); /* Thicken the look */
+        }
+
+        .player-controls__btn_play:hover {
+            box-shadow: var(--neon-shadow-hover); /* DYNAMIC NEON GLOW */
         }
 
         .player-controls__btn_play i {
             font-size: 36px; 
-            color: var(--text-light);
+            color: #000000; /* Icon color */
             transition: color 0.2s;
-        }
-
-        .player-controls__btn_play:hover i {
-            color: var(--highlight-color); /* Now white/light gray */
         }
 
         .player-controls_btn i {
@@ -160,32 +215,7 @@
             line-height: 1;
         }
         
-        /* Playlist/Search Button */
-        .playlist-search-btn {
-            height: calc(100% - 30px - 60% - 15px - 10px - 10% - 20px); 
-            min-height: 50px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-light);
-            background: var(--card-bg); 
-            cursor: pointer;
-            border-top: 1px solid var(--primary-border-color); 
-            transition: background 0.2s;
-        }
-
-        .playlist-search-btn:hover {
-            background: var(--subtle-bg-hover); 
-        }
-        
-        .playlist-search-btn i {
-            margin-right: 10px;
-            font-size: 20px;
-            color: var(--highlight-color); /* Now white/light gray */
-        }
-        
-        /* Playlist Overlay Styles */
+        /* Playlist Overlay Styles (Brutalist style retained) */
         .playlist-overlay {
             position: absolute;
             top: 0;
@@ -198,7 +228,7 @@
             flex-direction: column;
             padding: 20px 0;
             border: 1px solid var(--primary-border-color); 
-            border-radius: 8px;
+            border-radius: 0;
         }
         
         .playlist-header {
@@ -208,6 +238,7 @@
             padding: 0 15px;
             margin-bottom: 15px;
             color: var(--text-light);
+            flex-shrink: 0;
         }
 
         .playlist-header i {
@@ -221,19 +252,21 @@
             gap: 30px;
             margin-bottom: 20px;
             padding: 0 15px;
+            flex-shrink: 0;
         }
         
-        /* Search Bar Styling */
+        /* Search Bar Styling (Inside Overlay) */
         .search-container {
             padding: 0 15px;
             margin-bottom: 15px;
+            flex-shrink: 0;
         }
 
         #playlist-search-input {
             width: calc(100% - 20px);
             padding: 10px;
             border: 1px solid var(--primary-border-color); 
-            border-radius: 5px;
+            border-radius: 0; 
             background-color: var(--subtle-bg-hover);
             color: var(--text-light);
             font-size: 16px;
@@ -245,6 +278,7 @@
             padding: 0;
             margin: 0;
             overflow-y: auto;
+            flex-grow: 1;
         }
 
         .playlist-item {
@@ -261,15 +295,14 @@
         }
         
         .playlist-item.active {
-            color: var(--highlight-color); /* Now white/light gray */
-            /* Using a subtle white tint on black background for active state */
+            color: var(--highlight-color); 
             background: rgba(255, 255, 255, 0.1); 
         }
 
         .playlist-item-cover {
             width: 40px;
             height: 40px;
-            border-radius: 4px;
+            border-radius: 0; 
             background-size: cover;
             background-position: center center;
             margin-right: 10px;
@@ -291,22 +324,22 @@
         }
         
         .playlist-item.active .playlist-item-artist {
-            color: var(--highlight-color); /* Now white/light gray */
+            color: var(--highlight-color); 
         }
         
-        /* Overlay Controls (Repeat/Shuffle) */
+        /* Overlay Controls (Repeat/Shuffle - Brutalist style retained) */
         .playlist-controls .control-btn {
             cursor: pointer;
             color: var(--control-color);
             transition: color 0.2s, border-color 0.2s, background-color 0.2s;
             border: 1px solid var(--primary-border-color);
-            border-radius: 5px;
+            border-radius: 0; 
             padding: 5px 10px;
         }
 
         .playlist-controls .control-btn.active {
-            color: var(--highlight-color); /* Now white/light gray */
-            border-color: var(--highlight-color); /* Now white/light gray */
+            color: var(--highlight-color); 
+            border-color: var(--highlight-color); 
         }
 
         .playlist-controls .control-btn:hover {
@@ -334,6 +367,10 @@
 
 <div class="wrapper">
     <div class="card player">
+        
+        <div class="search-container-main">
+            <input type="text" id="main-search-input" placeholder="Search Playlist...">
+        </div>
         
         <div class="playlist-overlay" id="playlist-overlay">
             <div class="playlist-header">
@@ -378,17 +415,13 @@
             <div class="player-controls_btn player-controls__btn_next" id="player-controls__btn_next"><i class="material-icons">skip_next</i></div>
         </div>
         
-        <div class="playlist-search-btn" id="open-playlist-btn">
-            <i class="material-icons">search</i>
-            <span>SEARCH PLAYLIST</span>
-        </div>
     </div>
 </div>
 
 <audio id="audio-player" src=""></audio>
 
 <script>
-    // --- 1. SETUP AND DATA EXTRACTION (Unchanged) ---
+    // --- 1. SETUP AND DATA EXTRACTION ---
     const audioPlayer = document.getElementById('audio-player');
     const playPauseBtn = document.getElementById('play-pause-btn');
     const playPauseIcon = document.getElementById('play-pause-icon');
@@ -410,10 +443,11 @@
     const progressContainer = document.getElementById('progress-container');
 
     const playlistOverlay = document.getElementById('playlist-overlay');
-    const openPlaylistBtn = document.getElementById('open-playlist-btn');
     const closePlaylistBtn = document.getElementById('close-playlist-btn');
     const playlistListEl = document.getElementById('playlist-list');
-    const searchInput = document.getElementById('playlist-search-input'); 
+    
+    const mainSearchInput = document.getElementById('main-search-input'); 
+    const overlaySearchInput = document.getElementById('playlist-search-input'); 
 
     let currentTrackIndex = 0;
     let isShuffling = false;
@@ -432,8 +466,27 @@
         const remainingSeconds = Math.floor(seconds % 60);
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     }
+    
+    // --- OPEN/CLOSE LOGIC ---
+    function openPlaylistOverlay() {
+        renderPlaylist(); 
+        // Sync the overlay input with the visible input
+        overlaySearchInput.value = mainSearchInput.value; 
+        filterPlaylist(); // Filter immediately based on current text
+        
+        playlistOverlay.style.display = 'flex';
+        // Focus the input inside the overlay
+        overlaySearchInput.focus(); 
+    }
 
-    // --- 2. PLAYER LOGIC FUNCTIONS (Unchanged) ---
+    function closePlaylistOverlay() {
+        // Sync the visible input with the overlay input (in case filtering happened)
+        mainSearchInput.value = overlaySearchInput.value;
+        playlistOverlay.style.display = 'none';
+        mainSearchInput.blur();
+    }
+
+    // --- 2. PLAYER LOGIC FUNCTIONS ---
     
     function loadTrack(index) {
         currentTrackIndex = index;
@@ -516,7 +569,7 @@
             li.addEventListener('click', () => {
                 loadTrack(index);
                 playTrack();
-                playlistOverlay.style.display = 'none';
+                closePlaylistOverlay(); 
             });
             
             playlistListEl.appendChild(li);
@@ -528,7 +581,7 @@
     }
 
     function filterPlaylist() {
-        const searchTerm = searchInput.value.toLowerCase();
+        const searchTerm = overlaySearchInput.value.toLowerCase();
         const items = playlistListEl.querySelectorAll('.playlist-item');
 
         items.forEach(item => {
@@ -543,8 +596,22 @@
         });
     }
 
-    // --- 3. EVENT LISTENERS (Unchanged) ---
+    // --- 3. EVENT LISTENERS ---
 
+    // Open overlay when main search bar is clicked or focused
+    mainSearchInput.addEventListener('click', openPlaylistOverlay);
+    mainSearchInput.addEventListener('focus', openPlaylistOverlay);
+    // Sync visible input while typing, but don't open the overlay just yet
+    mainSearchInput.addEventListener('input', () => {
+        overlaySearchInput.value = mainSearchInput.value;
+    });
+
+    // Filtering happens when typing inside the overlay
+    overlaySearchInput.addEventListener('input', filterPlaylist);
+
+    closePlaylistBtn.addEventListener('click', closePlaylistOverlay);
+    
+    // Other player controls remain the same:
     playPauseBtn.addEventListener('click', () => {
         if (audioPlayer.paused) {
             playTrack();
@@ -602,19 +669,7 @@
         overlayRepeatIcon.parentElement.classList.toggle('active', repeatMode !== 0);
         overlayRepeatIcon.textContent = repeatMode === 2 ? 'repeat_one' : 'repeat';
     });
-    
-    openPlaylistBtn.addEventListener('click', () => {
-        renderPlaylist(); 
-        playlistOverlay.style.display = 'flex';
-        searchInput.focus(); 
-    });
 
-    closePlaylistBtn.addEventListener('click', () => {
-        playlistOverlay.style.display = 'none';
-        searchInput.value = ''; 
-    });
-    
-    searchInput.addEventListener('input', filterPlaylist);
 
     // --- Initial Load ---
     if (playlist.length > 0) {
